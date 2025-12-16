@@ -1,8 +1,6 @@
 from django.shortcuts import render
-
-# Create your views here.
-from django.shortcuts import render
+from .models import Item
 
 def home(request):
-    return render(request, "items/home.html")
-
+    items = Item.objects.all().order_by("-created_at")
+    return render(request, "items/home.html", {"items": items})

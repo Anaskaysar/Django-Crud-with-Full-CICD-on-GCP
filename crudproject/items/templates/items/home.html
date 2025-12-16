@@ -6,11 +6,23 @@
   </head>
   <body>
     <h1>Items Dashboard</h1>
-    <p>Your Django UI is now rendering an HTML template.</p>
 
-    <ul>
-      <li><a href="/admin/">Admin</a></li>
-      <li><a href="/items/">Items (legacy path if you kept it)</a></li>
-    </ul>
+{% if items %}
+  <ul>
+    {% for item in items %}
+      <li>
+        <strong>{{ item.name }}</strong><br />
+        {{ item.description }}<br />
+        <small>Created: {{ item.created_at }}</small>
+      </li>
+      <hr />
+    {% endfor %}
+  </ul>
+{% else %}
+  <p>No items found.</p>
+{% endif %}
+
+<p><a href="/admin/">Go to Admin</a></p>
+
   </body>
 </html>
