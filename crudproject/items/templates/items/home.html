@@ -1,28 +1,58 @@
 <!doctype html>
-<html>
+<html lang="en">
   <head>
     <meta charset="utf-8" />
-    <title>Items</title>
+    <title>Items Dashboard</title>
   </head>
+
   <body>
     <h1>Items Dashboard</h1>
 
-{% if items %}
-  <ul>
-    {% for item in items %}
-      <li>
-        <strong>{{ item.name }}</strong><br />
-        {{ item.description }}<br />
-        <small>Created: {{ item.created_at }}</small>
-      </li>
-      <hr />
-    {% endfor %}
-  </ul>
-{% else %}
-  <p>No items found.</p>
-{% endif %}
+    <!-- CREATE FORM -->
+    <h2>Add Item</h2>
 
-<p><a href="/admin/">Go to Admin</a></p>
+    <form method="post">
+      {% csrf_token %}
 
+      <div>
+        <label for="name">Name</label><br />
+        <input type="text" id="name" name="name" required />
+      </div>
+
+      <br />
+
+      <div>
+        <label for="description">Description</label><br />
+        <textarea id="description" name="description" rows="3"></textarea>
+      </div>
+
+      <br />
+
+      <button type="submit">Create Item</button>
+    </form>
+
+    <hr />
+
+    <!-- ITEMS LIST -->
+    <h2>Items</h2>
+
+    {% if items %}
+      <ul>
+        {% for item in items %}
+          <li>
+            <strong>{{ item.name }}</strong><br />
+            {{ item.description }}<br />
+            <small>Created: {{ item.created_at }}</small>
+          </li>
+          <hr />
+        {% endfor %}
+      </ul>
+    {% else %}
+      <p>No items found.</p>
+    {% endif %}
+
+    <p>
+      <a href="/admin/">Go to Admin</a>
+    </p>
   </body>
 </html>
