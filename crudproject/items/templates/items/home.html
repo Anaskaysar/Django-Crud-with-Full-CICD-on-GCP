@@ -1,58 +1,55 @@
-<!doctype html>
+{% load static %}
+<!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8" />
+<head>
+    <meta charset="UTF-8">
     <title>Items Dashboard</title>
-  </head>
+    <link rel="stylesheet" href="{% static 'items/style.css' %}">
+</head>
+<body>
 
-  <body>
+<div class="container">
+
     <h1>Items Dashboard</h1>
 
-    <!-- CREATE FORM -->
-    <h2>Add Item</h2>
+    <section class="card">
+        <h2>Add Item</h2>
+        <form method="post">
+            {% csrf_token %}
 
-    <form method="post">
-      {% csrf_token %}
+            <label for="name">Name</label>
+            <input type="text" name="name" id="name" required>
 
-      <div>
-        <label for="name">Name</label><br />
-        <input type="text" id="name" name="name" required />
-      </div>
+            <label for="description">Description</label>
+            <textarea name="description" id="description" rows="3" required></textarea>
 
-      <br />
+            <button type="submit">Create Item</button>
+        </form>
+    </section>
 
-      <div>
-        <label for="description">Description</label><br />
-        <textarea id="description" name="description" rows="3"></textarea>
-      </div>
+    <section class="card">
+        <h2>Items</h2>
 
-      <br />
+        {% if items %}
+            <ul class="items-list">
+                {% for item in items %}
+                    <li>
+                        <strong>{{ item.name }}</strong>
+                        <p>{{ item.description }}</p>
+                        <small>Created: {{ item.created_at }}</small>
+                    </li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p class="empty">No items found.</p>
+        {% endif %}
+    </section>
 
-      <button type="submit">Create Item</button>
-    </form>
+    <footer>
+        <a href="/admin/">Go to Admin</a>
+    </footer>
 
-    <hr />
+</div>
 
-    <!-- ITEMS LIST -->
-    <h2>Items</h2>
-
-    {% if items %}
-      <ul>
-        {% for item in items %}
-          <li>
-            <strong>{{ item.name }}</strong><br />
-            {{ item.description }}<br />
-            <small>Created: {{ item.created_at }}</small>
-          </li>
-          <hr />
-        {% endfor %}
-      </ul>
-    {% else %}
-      <p>No items found.</p>
-    {% endif %}
-
-    <p>
-      <a href="/admin/">Go to Admin</a>
-    </p>
-  </body>
+</body>
 </html>
