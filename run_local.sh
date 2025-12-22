@@ -1,14 +1,19 @@
 #!/bin/bash
-
-# Stop script if any command fails
 set -e
 
-# Go to project root (important when run from anywhere)
-PROJECT_DIR="$(cd "$(dirname "$0")" && pwd)"
-cd "$PROJECT_DIR"
+# Go to repo root (directory where this script lives)
+REPO_DIR="$(cd "$(dirname "$0")" && pwd)"
+cd "$REPO_DIR"
 
-# Activate virtual environment
+# Activate venv (local only)
 source venv/bin/activate
 
-# # Run Django server
-python crudproject/manage.py runserver
+# Load .env (local only)
+if [ -f ".env" ]; then
+  export $(grep -v '^#' .env | xargs)
+fi
+
+# Go to Django project folder (where manage.py is)
+cd crudproject
+
+python manage.py runserver
