@@ -15,4 +15,7 @@ RUN python manage.py collectstatic --noinput
 
 EXPOSE 8080
 
-CMD ["gunicorn", "crudproject.wsgi:application", "--bind", "0.0.0.0:8080"]
+# CMD ["gunicorn", "crudproject.wsgi:application", "--bind", "0.0.0.0:8080"]
+
+
+CMD ["sh", "-c", "gunicorn crudproject.wsgi:application --bind 0.0.0.0:${PORT:-8080}"]
