@@ -20,3 +20,4 @@ media/
 .vscode/
 .idea/
 run.sh
+.env
