@@ -1,0 +1,75 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Items Dashboard</title>
+    <link rel="stylesheet" href="{% static 'items/style.css' %}" />
+  </head>
+
+  <body>
+    <div class="container">
+      <h1>Items Dashboard</h1>
+
+      <!-- Add Item -->
+      <section class="card">
+        <h2>Add Item</h2>
+
+        <form method="post">
+          {% csrf_token %}
+
+          <label for="name">Name</label>
+          <input type="text" name="name" id="name" required />
+
+          <label for="description">Description</label>
+          <textarea
+            name="description"
+            id="description"
+            rows="3"
+            required
+          ></textarea>
+
+          <button class="btn btn-create" type="submit">Create Item</button>
+        </form>
+      </section>
+
+      <!-- Items List -->
+      <section class="card">
+        <h2>Items</h2>
+
+        {% if items %}
+          <div class="items-list">
+            {% for item in items %}
+              <div class="item-row">
+                <div class="item-content">
+                  <strong>{{ item.name }}</strong>
+                  <p>{{ item.description }}</p>
+                  <small>Created: {{ item.created_at }}</small>
+                </div>
+
+                <div class="item-actions">
+                  <form method="post" action="{% url 'items-delete' item.id %}">
+                    {% csrf_token %}
+                    <button
+                      class="btn btn-delete"
+                      type="submit"
+                      onclick="return confirm('Delete this item?');"
+                    >
+                      Delete
+                    </button>
+                  </form>
+                </div>
+              </div>
+            {% endfor %}
+          </div>
+        {% else %}
+          <p class="empty">No items found.</p>
+        {% endif %}
+      </section>
+
+      <footer>
+        <a href="/admin/">Go to Admin</a>
+      </footer>
+    </div>
+  </body>
+</html>
