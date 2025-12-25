@@ -1,0 +1,18 @@
+apiVersion: serving.knative.dev/v1
+kind: Service
+metadata:
+  name: django-crud-cicd
+spec:
+  template:
+    spec:
+      containers:
+        - image: gcr.io/django-crud-cicd-gcp/django-crud-cicd
+          env:
+            - name: SECRET_KEY
+              value: "django-insecure-)b-e2)9ret1+7*8y34^82o2kom!ntm-6-oq-_f)$2p7adrw$k%"
+            - name: DEBUG
+              value: "False"
+            - name: ALLOWED_HOSTS
+              value: ".run.app,.a.run.app,localhost,127.0.0.1"
+            - name: CSRF_TRUSTED_ORIGINS
+              value: "https://*.run.app,https://*.a.run.app"
