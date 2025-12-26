@@ -74,6 +74,25 @@ The application is fully containerized using Docker and designed to run **identi
 
 ---
 
+## 🗂️ Final Project Structure
+
+```
+Second-cicd/
+├── crudproject/
+│   ├── crudproject/
+│   │   ├── settings.py
+│   │   ├── urls.py
+│   │   └── wsgi.py
+│   ├── items/
+│   ├── manage.py
+│   └── db.sqlite3
+├── Dockerfile
+├── requirements.txt
+├── .dockerignore
+├── .gitignore
+└── .env (local only, in .gitignore)
+```
+
 ## ☁️ Google Cloud Run Deployment
 
 ### Deployment Model
