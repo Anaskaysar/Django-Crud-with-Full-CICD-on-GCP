@@ -1,25 +1,25 @@
 from pathlib import Path
 import os
+from dotenv import load_dotenv
 
-# ------------------------------------------------------------
-# Base directory
-# ------------------------------------------------------------
+# Load .env file if it exists (for local development)
+load_dotenv()
 
+
+# Build paths inside the project
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+# SECURITY WARNING: keep the secret key used in production secret!
+SECRET_KEY = os.environ.get('SECRET_KEY', 'django-insecure-fallback-key')
 
-# ------------------------------------------------------------
-# Core settings (loaded from .env)
-# ------------------------------------------------------------
+# SECURITY WARNING: don't run with debug turned on in production!
+DEBUG = os.environ.get('DEBUG', 'False') == 'True'
 
-SECRET_KEY = os.getenv("SECRET_KEY")
+# ALLOWED_HOSTS
+ALLOWED_HOSTS = [host.strip() for host in os.environ.get('ALLOWED_HOSTS', 'localhost').split(',') if host.strip()]
 
-DEBUG = os.getenv("DEBUG", "False").lower() == "true"
-
-ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS").split(",")
-
-CSRF_TRUSTED_ORIGINS = os.getenv("CSRF_TRUSTED_ORIGINS").split(",")
-
+# CSRF
+CSRF_TRUSTED_ORIGINS = [origin.strip() for origin in os.environ.get('CSRF_TRUSTED_ORIGINS', '').split(',') if origin.strip()]
 
 # ------------------------------------------------------------
 # Applications
@@ -65,6 +65,7 @@ TEMPLATES = [
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
+                "django.template.context_processors.debug",
                 "django.template.context_processors.request",
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",

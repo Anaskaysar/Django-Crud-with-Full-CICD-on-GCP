@@ -1,144 +1,185 @@
-# Django CRUD App with Docker, CI/CD, and GCP Deployment
+# Django CRUD Application — Dockerized & Deployed on Google Cloud Run
+
+**Live Application:**  
+👉 https://django-crud-cicd-wqjxcth5bq-uc.a.run.app/
+
+---
 
 ## 📌 Project Overview
 
-This project is a **learning-focused Django CRUD application** created to understand:
+This project is a **Django-based CRUD application** built to understand and practice the **complete backend deployment lifecycle** — not just development.
 
-- Django project and app structure
-- CRUD operations using Django ORM
-- Static files handling in development vs production
-- Containerization using Docker
-- Running Django with Gunicorn
-- Preparing an application for deployment on **Google Cloud Platform (Cloud Run)**
+The goal was to move beyond “it works on my machine” and gain **real-world experience** with:
 
-The emphasis of this project is Django mastery, but understanding **how applications move from local development to containerized, deployable cloud services**.
+- Docker containerization
+- Production-ready Django configuration
+- Google Cloud Run deployment
+- Environment-based configuration
+- Debugging real production failures
+
+This repository intentionally reflects **real engineering challenges** faced during deployment and how they were resolved.
+
 ---
 
-## 🎯 End Goal
+## 🎯 Project Goals
 
-The final goal of this project is to:
-
-- Build a working Django CRUD application
-- Containerize it using Docker
-- Run it using Gunicorn (production-grade WSGI server)
-- Deploy it to **Google Cloud Run**
-
-> Cloud deployment will be completed in the next phase.
+- Build a functional Django CRUD application
+- Containerize the application using Docker
+- Run the application with **Gunicorn** (production WSGI server)
+- Deploy the application to **Google Cloud Run**
+- Debug and fix real deployment-time failures
+- Prepare the project for CI/CD and further production hardening
 
 ---
 
 ## 🛠️ Tech Stack
 
-- **Backend:** Django 6.0
-- **Database:** SQLite (local learning)
-- **WSGI Server:** Gunicorn
-- **Containerization:** Docker
-- **Cloud Target:** Google Cloud Run
-- **Python:** 3.12 (Docker) / 3.14 (local)
+| Layer            | Technology                  |
+| ---------------- | --------------------------- |
+| Backend          | Django                      |
+| Database         | SQLite (development & demo) |
+| WSGI Server      | Gunicorn                    |
+| Static Files     | WhiteNoise                  |
+| Containerization | Docker                      |
+| Cloud Platform   | Google Cloud Run            |
+| Python           | 3.12 (Docker), 3.14 (Local) |
 
 ---
 
-## 🧭 Steps Followed
+## 🧱 Application Features
 
-### 1. Django Setup
-- Created Django project `crudproject`
-- Created app `items`
-- Configured URLs and verified development server
-
-### 2. CRUD Implementation
-- Created `Item` model (name, description, created_at)
-- Registered model in Django Admin
-- Implemented:
-  - Create item
-  - List items
-  - Delete item
-
-### 3. Templates & UI
-- Used Django templates
-- Created `home.html`
-- Displayed item list and form on single page
-
-### 4. Static Files & Styling
-- Added CSS styling
-- Configured static file loading
-- Used `{% load static %}` correctly
-- Learned difference between dev server and Gunicorn static handling
-
-### 5. Git & Environment
-- Used virtual environment
-- Generated `requirements.txt`
-- Used `development` branch
-- Added `.gitignore`
+- Django project: `crudproject`
+- Django app: `items`
+- CRUD functionality:
+  - Create items
+  - View item list
+  - Delete items
+- Django Admin enabled
+- Server-side rendered templates
+- Basic CSS styling
 
 ---
 
-## ⚠️ Issues Faced & Solutions
+## 🐳 Docker & Containerization
 
-### Externally Managed Environment
-- **Cause:** Homebrew Python restrictions
-- **Fix:** Used virtual environment
+The application is fully containerized using Docker and designed to run **identically** locally and in Cloud Run.
 
-### 404 on Root URL
-- **Cause:** Missing root URL mapping
-- **Fix:** Included `items.urls` properly
+### Key Container Characteristics
 
-### Static Files Not Loading
-- **Cause:** Incorrect static paths
-- **Fix:** Correct folder structure + `collectstatic`
-
-### Port Already in Use
-- **Cause:** Django server and Gunicorn running together
-- **Fix:** Identified process using `lsof` and stopped it
-
-### Dockerfile Not Found
-- **Cause:** File named incorrectly (`Docerfile`)
-- **Fix:** Renamed to `Dockerfile`
+- Python slim base image
+- Gunicorn as the entrypoint
+- Environment-driven configuration
+- Cloud Run–compatible port binding (`$PORT`)
+- Static file handling via WhiteNoise
 
 ---
 
-## 🐳 Dockerization
+## 🗂️ Final Project Structure
 
-### Build Image
-```bash
-docker build -t django-crud:local .
+```
+Second-cicd/
+├── crudproject/
+│   ├── crudproject/
+│   │   ├── settings.py
+│   │   ├── urls.py
+│   │   └── wsgi.py
+│   ├── items/
+│   ├── manage.py
+│   └── db.sqlite3
+├── Dockerfile
+├── requirements.txt
+├── .dockerignore
+├── .gitignore
+└── .env (local only, in .gitignore)
 ```
 
-### Run Container
-```bash
-docker run -p 8080:8080 django-crud:local
-```
+## ☁️ Google Cloud Run Deployment
 
-### Result
-- Gunicorn starts successfully
-- Django app runs inside Docker
-- Application is Cloud Run ready
+### Deployment Model
 
----
+- Source-based deployment using Cloud Build
+- Stateless container runtime
+- Public HTTPS endpoint
+- Environment variables managed via Cloud Run UI
 
-## ✅ Current Status
+### Production Environment Variables
 
-- CRUD fully working
-- UI styled and functional
-- Docker image built successfully
-- Gunicorn running
-- Ready for GCP deployment
+Configured in Cloud Run:
+
+- `DEBUG`
+- `SECRET_KEY`
+- `ALLOWED_HOSTS`
+- `CSRF_TRUSTED_ORIGINS`
 
 ---
 
-## ⏭️ Next Steps
+## ✅ Current Status (Deployment Milestone)
 
-- Push image to Google Artifact Registry
-- Deploy to Google Cloud Run
-- Configure IAM & service access
-- Add CI/CD pipeline later
+- ✅ Django CRUD application works correctly in **local development**
+- ✅ Application is fully **Dockerized**
+- ✅ Gunicorn runs Django in production mode
+- ✅ Application is **successfully deployed to Google Cloud Run**
+- ✅ All major runtime errors (400 / 500) have been resolved
+- ✅ Application is publicly accessible via HTTPS
+
+**Live URL:**  
+👉 https://django-crud-cicd-wqjxcth5bq-uc.a.run.app/
 
 ---
 
-## 🧠 Key Learning
+## 📄 Deployment Debugging & Error Analysis
 
-This project focuses on **real-world engineering problems**:
-- Understanding errors
-- Debugging step-by-step
-- Learning production behavior early
+Several real-world production issues were encountered and resolved during deployment.
 
-The README will be continuously updated as the project evolves.
+A detailed breakdown of the debugging journey is intentionally preserved in a separate document:
+
+👉 **DEPLOY_ERROR.md**
+
+This file is kept separate for long-term learning and reference.
+
+---
+
+## 🧠 Key Learnings
+
+- Local success does not guarantee production success
+- Containers start with a clean filesystem every time
+- Database migrations must be explicitly handled
+- Cloud Run is stateless
+- Environment variables are critical in production
+- Logs are the primary debugging tool in cloud environments
+
+---
+
+## ⏭️ Next Steps (Planned Work)
+
+### 1️⃣ CI/CD Pipeline (Next Major Goal)
+
+- Connect GitHub repository to Cloud Run
+- Enable automatic build & deploy on push
+- Introduce branch-based deployment flow
+
+### 2️⃣ Database Persistence
+
+- Replace SQLite with **Cloud SQL (PostgreSQL)**
+- Ensure data persistence across container restarts
+- Handle migrations safely in production
+
+### 3️⃣ Production Hardening
+
+- Improve logging configuration
+- Add health check endpoint
+- Harden security-related settings
+- Improve error handling and observability
+
+---
+
+## 🎯 Project Intent
+
+This project is designed to simulate **real backend engineering work**, including:
+
+- Deployment failures
+- Environment mismatches
+- Cloud-specific behavior
+- Debugging production-only issues
+
+Each phase is completed, stabilized, and documented before moving forward.
