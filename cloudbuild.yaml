@@ -3,6 +3,9 @@ substitutions:
   _SERVICE: django-crud-cicd
   _AR_REPO: django-crud-cicd
 
+options:
+  logging: CLOUD_LOGGING_ONLY
+
 steps:
   # Build the container image
   - name: gcr.io/cloud-builders/docker
@@ -14,12 +17,13 @@ steps:
       - "${_REGION}-docker.pkg.dev/$PROJECT_ID/${_AR_REPO}/${_SERVICE}:latest"
       - "."
 
-  # Push both tags
+  # Push SHORT_SHA tag
   - name: gcr.io/cloud-builders/docker
     args:
       - push
       - "${_REGION}-docker.pkg.dev/$PROJECT_ID/${_AR_REPO}/${_SERVICE}:$SHORT_SHA"
 
+  # Push latest tag
   - name: gcr.io/cloud-builders/docker
     args:
       - push
